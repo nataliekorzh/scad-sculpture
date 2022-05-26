@@ -53,7 +53,7 @@ char trash_string[25];
    Read the PGM file that describes the target image.
  */
 
-if ((image=fopen("eye.pgm", "r")) == NULL) 
+if ((image=fopen("albinosquirrel.pgm", "r")) == NULL) 
   {
     printf("Couldn't open cat.pgm!\n");
     exit(0);
@@ -96,7 +96,7 @@ for (i = 0; i < ROWS_M; i++)
    setlinewidth.
  */
 
-if ((eps=fopen("circle_mosaic.eps", "w")) == NULL)
+if ((eps=fopen("squirrel.eps", "w")) == NULL)
   {
     printf("Couldn't open cat.eps!\n");
     exit(0);

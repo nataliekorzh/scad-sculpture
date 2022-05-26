@@ -68,8 +68,8 @@ def main():
     fileName = 'coordinates.txt'
     imageFile = sys.argv[1]
 
-    image, test = parse_image(imageFile)
-    
+    image = parse_image_OneSided(imageFile)
+    """
     with open(fileName, 'w') as file:
         num = 'i'
         for row in image:
@@ -78,11 +78,11 @@ def main():
                 file.write("[" + str(i[0]) + "," + str(i[1]) + "," + str(i[2]) + "],\n")
             file.write("];\n")
             num += 'i'
-    
-    with open('test.txt', 'w') as file:
+    """
+    with open('squirrel_random.txt', 'w') as file:
         file.write("test = scale*[\n")
-        for row in test:
+        for row in image:
             file.write("[" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "],\n")
-        file.write("\;\n")
+        file.write("];\n")
 
 main()

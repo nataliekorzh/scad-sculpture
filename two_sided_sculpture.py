@@ -38,10 +38,10 @@ def main():
 
     image = parse_image(imageFile)
     
-    with open('output2.txt', 'w') as file:
+    with open('squirrel3D.txt', 'w') as file:
         file.write("output2 = scale*[\n")
         for row in image:
             file.write("[" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "],\n")
-        file.write("\;\n")
+        file.write("];\n")
 
 main()
