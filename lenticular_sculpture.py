@@ -5,17 +5,20 @@ def lenticulate(image, uc):
     final = []
     uc = list(uc)
     num = int(len(uc)/5)
+    avg = 0
     chunks=[uc[i:i + num] for i in range(0, len(uc), num)]
     groups = {}
     for index in range(len(chunks)):
+        avg = max(avg,len(chunks[index]))
         for c in chunks[index]:
             groups[c] = index
-    print(groups)
-    counter = 10
+    counter = 15
     mv = 0
+    print(avg)
     for row in image:
         for col in image[row]:
-            final.append([col,counter*groups[col],row])
+            final.append([col,counter*groups[col]+avg,row])
+            final.append([counter*groups[col]+avg,col-avg,row])
             #if counter % group == 0:
             #    counter = 1
             #    mv += 1
@@ -51,7 +54,6 @@ def parse_image(fileName):
                         mincol = j
                     if j > maxcol:
                         maxcol = j
-    print(len(unique_col))
     return lenticulate(image, unique_col)
 
 def main():
