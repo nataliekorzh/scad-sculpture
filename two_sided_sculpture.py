@@ -33,15 +33,27 @@ def parse_image(fileName):
     return image
 
 def main():
-    fileName = 'coordinates.txt'
+    fileName = 'coordinates-2sided.scad'
     imageFile = sys.argv[1]
 
     image = parse_image(imageFile)
     
-    with open('squirrel3D.txt', 'w') as file:
-        file.write("output2 = scale*[\n")
+    with open(fileName, 'w') as file:
+        file.write('point_radius = 5; // radius of a point (a sphere)\n')
+        file.write('scale = 10;   // a scaling factor (increase to expand, decrease to contract\n')
+        file.write('// module for drawing a point (a sphere)\n\n')
+        file.write('module point(v) {\n')
+        file.write('translate(v) sphere(r=point_radius);\n')
+        file.write('}\n\n')
+
+        file.write("vertices = scale*[\n")
         for row in image:
             file.write("[" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "],\n")
-        file.write("];\n")
+        file.write("];\n\n\n")
+        
+        file.write('color([0,0,0])\n')
+        file.write('// Draw one point (a sphere) for each vertex\n')
+        file.write('for (i=[0:len(vertices)-1])\n')
+        file.write('  point(vertices[i]);\n')
 
 main()

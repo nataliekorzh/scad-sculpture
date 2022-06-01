@@ -19,7 +19,7 @@ def parse_image(fileName):
     return image
 
 def main():
-    fileName = 'squirrel_random.scad'
+    fileName = 'ice_cream_D.scad'
     imageFile = sys.argv[1]
 
     image = parse_image(imageFile)

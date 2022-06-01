@@ -1,8 +1,7 @@
 import sys
 import random
 
-def lenticulate(image, uc):
-    final = []
+def splitup(uc):
     uc = list(uc)
     num = int(len(uc)/5)
     avg = 0
@@ -12,29 +11,24 @@ def lenticulate(image, uc):
         avg = max(avg,len(chunks[index]))
         for c in chunks[index]:
             groups[c] = index
+    return groups, avg
+
+def lenticulate(image1, group1, avg1, image2, group2, avg2):
+    final = []
     counter = 15
-    mv = 0
-    print(avg)
-    for row in image:
-        for col in image[row]:
-            final.append([col,counter*groups[col]+avg,row])
-            final.append([counter*groups[col]+avg,col-avg,row])
-            #if counter % group == 0:
-            #    counter = 1
-            #    mv += 1
-            #else:
-            #    counter += 1 
+    for row in image1:
+        for col in image1[row]:
+            final.append([col,counter*group1[col]+avg1,row])
+    print(avg2)
+    for row in image2:
+        for col in image2[row]:
+            final.append([counter*group2[col]+avg2,col-avg2,row])
     return final
 
 def parse_image(fileName):
     rows = 0
     cols = 0
     image = {}
-    first = []
-    columns = []
-    test = []
-    maxcol = 0
-    mincol = 100
     unique_col = set()
     with open(fileName, 'r') as file:
         file.readline()
@@ -45,22 +39,22 @@ def parse_image(fileName):
             for j in range(cols):
                 pixel = int(file.readline().strip())
                 if pixel == 0:
-                    z = random.randint(0,100) #create random z coordinate
                     if -i not in image:
                         image[-i] = []
                     image[-i].append(j)
                     unique_col.add(j)
-                    if j < mincol:
-                        mincol = j
-                    if j > maxcol:
-                        maxcol = j
-    return lenticulate(image, unique_col)
+    return image, unique_col
 
 def main():
-    fileName = 'lenticular_eye.scad'
-    imageFile = sys.argv[1]
+    fileName = 'lenticular_thumb.scad'
+    imageFileOne = sys.argv[1]
+    imageFileTwo = sys.argv[2]
 
-    image = parse_image(imageFile)
+    image1, uc1 = parse_image(imageFileOne)
+    image2, uc2 = parse_image(imageFileTwo)
+    g1, avg1 = splitup(uc1)
+    g2, avg2 = splitup(uc2)
+    target = lenticulate(image1, g1, avg1, image2, g2, avg2)
     
     with open(fileName, 'w') as file:
         file.write('point_radius = 5; // radius of a point (a sphere)\n')
@@ -71,7 +65,7 @@ def main():
         file.write('}\n\n')
 
         file.write("vertices = scale*[\n")
-        for row in image:
+        for row in target:
             file.write("[" + str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "],\n")
         file.write("];\n\n\n")
         file.write('color([0,0,0])\n')
